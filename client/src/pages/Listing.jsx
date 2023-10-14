@@ -13,6 +13,7 @@ import {
 	FaShare,
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 export default function Listing() {
 	const [listing, setListing] = useState(null);
@@ -22,6 +23,7 @@ export default function Listing() {
 	const [contact, setContact] = useState(false);
 	const params = useParams();
 	const { currentUser } = useSelector((state) => state.user);
+	console.log(currentUser._id, listing?.userRef);
 
 	useEffect(() => {
 		const fetchListing = async () => {
@@ -84,7 +86,7 @@ export default function Listing() {
 					)}
 					<div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
 						<p className=' text-2xl font-semibold'>
-							{listing.className} - ${" "}
+							{listing.name} - ${" "}
 							{listing.offer
 								? listing.discountPrice.toLocaleString("en-US")
 								: listing.regularPrice.toLocaleString("en-US")}
@@ -138,6 +140,7 @@ export default function Listing() {
 								Contact landlord
 							</button>
 						)}
+						{contact && <Contact listing={listing} />}
 					</div>
 				</div>
 			)}
