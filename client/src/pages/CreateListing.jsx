@@ -1,3 +1,4 @@
+//done
 import { useState } from "react";
 import {
 	getDownloadURL,
@@ -32,8 +33,6 @@ export default function CreateListing() {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
-	console.log(formData);
-
 	const handleImageSubmit = () => {
 		if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
 			setUploading(true);
@@ -53,7 +52,7 @@ export default function CreateListing() {
 					setUploading(false);
 				})
 				.catch((err) => {
-					setImageUploadError("Image upload failed (2 mb max per image): ");
+					setImageUploadError("Image upload failed (2 mb max per image)");
 					setUploading(false);
 				});
 		} else {
@@ -283,7 +282,9 @@ export default function CreateListing() {
 							/>
 							<div className=' flex flex-col items-center'>
 								<p>Regular Price</p>
-								<span className=' text-xs'>($ / month)</span>
+								{formData.type === "rent" && (
+									<span className='text-xs'>($ / month)</span>
+								)}
 							</div>
 						</div>
 						{formData.offer && (
@@ -300,7 +301,9 @@ export default function CreateListing() {
 								/>
 								<div className=' flex flex-col items-center'>
 									<p>Discounted Price</p>
-									<span className=' text-xs'>($ / month)</span>
+									{formData.type === "rent" && (
+										<span className='text-xs'>($ / month)</span>
+									)}
 								</div>
 							</div>
 						)}
@@ -319,7 +322,7 @@ export default function CreateListing() {
 							type='file'
 							className=' p-3 border border-gray-300 rounded w-full'
 							id='images'
-							accept='images/*'
+							accept='image/*'
 							multiple
 						/>
 						<button

@@ -1,3 +1,4 @@
+//done
 import { useEffect, useState } from "react";
 import {
 	getDownloadURL,
@@ -67,7 +68,7 @@ export default function UpdateListing() {
 					setUploading(false);
 				})
 				.catch((err) => {
-					setImageUploadError("Image upload failed (2 mb max per image): ");
+					setImageUploadError("Image upload failed (2 mb max per image)");
 					setUploading(false);
 				});
 		} else {
@@ -297,7 +298,9 @@ export default function UpdateListing() {
 							/>
 							<div className=' flex flex-col items-center'>
 								<p>Regular Price</p>
-								<span className=' text-xs'>($ / month)</span>
+								{formData.type === "rent" && (
+									<span className='text-xs'>($ / month)</span>
+								)}
 							</div>
 						</div>
 						{formData.offer && (
@@ -306,15 +309,17 @@ export default function UpdateListing() {
 									type='number'
 									className=' p-3 border border-gray-300 rounded-lg'
 									id='discountPrice'
-									min='00'
+									min='0'
 									max='10000000'
 									required
 									onChange={handleChange}
 									value={formData.discountPrice}
 								/>
 								<div className=' flex flex-col items-center'>
-									<p>Discounted Price</p>
-									<span className=' text-xs'>($ / month)</span>
+									<p>Discounted Price</p>{" "}
+									{formData.type === "rent" && (
+										<span className='text-xs'>($ / month)</span>
+									)}
 								</div>
 							</div>
 						)}
@@ -333,7 +338,7 @@ export default function UpdateListing() {
 							type='file'
 							className=' p-3 border border-gray-300 rounded w-full'
 							id='images'
-							accept='images/*'
+							accept='image/*'
 							multiple
 						/>
 						<button

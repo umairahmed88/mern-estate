@@ -1,3 +1,4 @@
+//done
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +29,7 @@ export default function Profile() {
 	const [fileUploadError, setFileUploadError] = useState(false);
 	const [formData, setFormData] = useState({});
 	const [updateSuccess, setUpdateSuccess] = useState(false);
-	const [showListingError, setShowListingError] = useState(false);
+	const [showListingsError, setShowListingsError] = useState(false);
 	const [userListings, setUserListings] = useState([]);
 	const dispatch = useDispatch();
 
@@ -58,9 +59,9 @@ export default function Profile() {
 			},
 
 			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					setFormData({ ...formData, avatar: downloadURL });
-				});
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+					setFormData({ ...formData, avatar: downloadURL })
+				);
 			}
 		);
 	};
@@ -120,7 +121,7 @@ export default function Profile() {
 		try {
 			dispatch(signOutUserStart());
 			const res = await fetch("/api/auth/signout");
-			const data = res.json();
+			const data = await res.json();
 
 			if (data.success === false) {
 				dispatch(signOutUserFailure(data.message));
@@ -134,18 +135,18 @@ export default function Profile() {
 
 	const handleShowListings = async () => {
 		try {
-			setShowListingError(false);
+			setShowListingsError(false);
 			const res = await fetch(`/api/user/listings/${currentUser._id}`);
 			const data = await res.json();
 
 			if (data.success === false) {
-				setShowListingError(true);
+				setShowListingsError(true);
 				return;
 			}
 
 			setUserListings(data);
 		} catch (error) {
-			setShowListingError(true);
+			setShowListingsError(true);
 		}
 	};
 
@@ -157,7 +158,7 @@ export default function Profile() {
 
 			const data = await res.json();
 
-			if (data.status === false) {
+			if (data.success === false) {
 				console.log(data.message);
 				return;
 			}
@@ -182,10 +183,10 @@ export default function Profile() {
 					accept='image/*'
 				/>
 				<img
-					src={formData?.avatar || currentUser.avatar}
-					alt='profile'
-					className=' rounded-full mt-2 h-24 w-24 object-cover cursor-pointer self-center'
 					onClick={() => fileRef.current.click()}
+					src={formData.avatar || currentUser.avatar}
+					alt='profile'
+					className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
 				/>
 				<p className=' text-sm self-center'>
 					{fileUploadError ? (
@@ -257,7 +258,7 @@ export default function Profile() {
 				Show Listings
 			</button>
 			<p className=' text-red-700 mt-5'>
-				{showListingError ? "Error showing listings" : ""}
+				{showListingsError ? "Error showing listings" : ""}
 			</p>
 			{userListings && userListings.length > 0 && (
 				<div className='flex flex-col gap-4'>

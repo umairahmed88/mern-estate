@@ -11,9 +11,6 @@ export default function Home() {
 	const [rentListings, setRentListings] = useState([]);
 	const [saleListings, setSaleListings] = useState([]);
 	SwiperCore.use([Navigation]);
-	console.log(offerListings);
-
-	console.log(saleListings);
 
 	useEffect(() => {
 		const fetchOfferListings = async () => {
@@ -120,11 +117,11 @@ export default function Home() {
 								Show more places for rent
 							</Link>
 						</div>
-						{/* <div className='flex flex-wrap gap-4'>
+						<div className='flex flex-wrap gap-4'>
 							{rentListings.map((listing) => (
 								<ListingItem listing={listing} key={listing._id} />
 							))}
-						</div> */}
+						</div>
 					</div>
 				)}
 				{saleListings && saleListings.length > 0 && (
